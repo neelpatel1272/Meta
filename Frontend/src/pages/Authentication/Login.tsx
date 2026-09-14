@@ -55,7 +55,7 @@ const Login = (props: any) => {
 
         initialValues: {
             email: userLogin.email || "admin@themesbrand.com" || '',
-            password: userLogin.password || "12345678" || '',
+            password: userLogin.password || "123456" || '',
         },
         validationSchema: Yup.object({
             email: Yup.string().required("Please Enter Your Email"),

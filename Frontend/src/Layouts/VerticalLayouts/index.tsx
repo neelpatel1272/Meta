@@ -122,9 +122,9 @@ const VerticalLayout = (props : any) => {
     }
 
     const removeActivation = (items :any) => {
-        let actiItems = items.filter((x : any) => x.classList.contains("active"));
+        let activeItems = items.filter((x : any) => x.classList.contains("active"));
 
-        actiItems.forEach((item : any) => {
+        activeItems.forEach((item : any) => {
             if (item.classList.contains("menu-link")) {
                 if (!item.classList.contains("active")) {
                     item.setAttribute("aria-expanded", false);
@@ -160,6 +160,7 @@ const VerticalLayout = (props : any) => {
                                             className="nav-link menu-link"
                                             to={item.link ? item.link : "/#"}
                                             data-bs-toggle="collapse"
+                                            aria-expanded={item.stateVariables}
                                         >
                                             <i className={item.icon}></i>
                                             <span data-key="t-apps">{props.t(item.label)}</span>
@@ -170,9 +171,9 @@ const VerticalLayout = (props : any) => {
                                         <Collapse
                                             className="menu-dropdown"
                                             isOpen={item.stateVariables}
-                                            id="sidebarApps">
-                                            <ul className="nav nav-sm flex-column test">
-                                                {/* subItms  */}
+                                            id={item.id}>
+                                            <ul className="nav nav-sm flex-column">
+                                                {/* subItems  */}
                                                 {item.subItems && ((item.subItems || []).map((subItem : any, key : number) => (
                                                     <React.Fragment key={key}>
                                                         {!subItem.isChildItem ? (
@@ -194,15 +195,16 @@ const VerticalLayout = (props : any) => {
                                                                     className="nav-link"
                                                                     to="/#"
                                                                     data-bs-toggle="collapse"
+                                                                    aria-expanded={subItem.stateVariables}
                                                                 >
                                                                     {props.t(subItem.label)}
                                                                     {subItem.badgeName ?
                                                                         <span className={"badge badge-pill bg-" + subItem.badgeColor} data-key="t-new">{subItem.badgeName}</span>
                                                                         : null}
                                                                 </Link>
-                                                                <Collapse className="menu-dropdown" isOpen={subItem.stateVariables} id="sidebarEcommerce">
+                                                                <Collapse className="menu-dropdown" isOpen={subItem.stateVariables} id={subItem.id}>
                                                                     <ul className="nav nav-sm flex-column">
-                                                                        {/* child subItms  */}
+                                                                        {/* child subItems  */}
                                                                         {subItem.childItems && (
                                                                             (subItem.childItems || []).map((childItem : any, key : number) => (
                                                                                 <React.Fragment key={key}>
@@ -215,10 +217,10 @@ const VerticalLayout = (props : any) => {
                                                                                             </Link>
                                                                                         </li>
                                                                                         : <li className="nav-item">
-                                                                                            <Link to="/#" className="nav-link" onClick={childItem.click} data-bs-toggle="collapse">
+                                                                                            <Link to="/#" className="nav-link" onClick={childItem.click} data-bs-toggle="collapse" aria-expanded={childItem.stateVariables}>
                                                                                                 {props.t(childItem.label)}
                                                                                             </Link>
-                                                                                            <Collapse className="menu-dropdown" isOpen={childItem.stateVariables} id="sidebaremailTemplates">
+                                                                                            <Collapse className="menu-dropdown" isOpen={childItem.stateVariables} id={childItem.id}>
                                                                                                 <ul className="nav nav-sm flex-column">
                                                                                                     {childItem.childItems.map((subChildItem : any, key : number) => (
                                                                                                         <li className="nav-item" key={key}>

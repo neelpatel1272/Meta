@@ -79,9 +79,9 @@ const HorizontalLayout = (props: any) => {
     }
 
     const removeActivation = (items : any) => {
-        let actiItems = items.filter((x : any) => x.classList.contains("active"));
+        let activeItems = items.filter((x : any) => x.classList.contains("active"));
 
-        actiItems.forEach((item : any) => {
+        activeItems.forEach((item : any) => {
             if (item.classList.contains("menu-link")) {
                 if (!item.classList.contains("active")) {
                     item.setAttribute("aria-expanded", false);
@@ -114,14 +114,15 @@ const HorizontalLayout = (props: any) => {
                                         className="nav-link menu-link"
                                         to={item.link ? item.link : "/#"}
                                         data-bs-toggle="collapse"
+                                        aria-expanded={item.stateVariables}
                                     >
                                         <i className={item.icon}></i> <span data-key="t-apps">{props.t(item.label)}</span>
                                     </Link>
                                     <Collapse
                                         className={item.id === "baseUi" && item.subItems.length > 13 ? "menu-dropdown mega-dropdown-menu" : "menu-dropdown"}
                                         isOpen={item.stateVariables}
-                                        id="sidebarApps">
-                                        {/* subItms  */}
+                                        id={item.id}>
+                                        {/* subItems  */}
                                         {item.id === "baseUi" && item.subItems.length > 13 ? (
                                             <React.Fragment>
                                                 <Row>
@@ -151,7 +152,7 @@ const HorizontalLayout = (props: any) => {
                                                 </Row>
                                             </React.Fragment>
                                         ) : (
-                                            <ul className="nav nav-sm flex-column test">
+                                            <ul className="nav nav-sm flex-column">
                                                 {item.subItems && ((item.subItems || []).map((subItem : any, key : number) => (
                                                     <React.Fragment key={key}>
                                                         {!subItem.isChildItem ? (
@@ -170,11 +171,12 @@ const HorizontalLayout = (props: any) => {
                                                                     className="nav-link"
                                                                     to="/#"
                                                                     data-bs-toggle="collapse"
+                                                                    aria-expanded={subItem.stateVariables}
                                                                 > {props.t(subItem.label)}
                                                                 </Link>
-                                                                <Collapse className="menu-dropdown" isOpen={subItem.stateVariables} id="sidebarEcommerce">
+                                                                <Collapse className="menu-dropdown" isOpen={subItem.stateVariables} id={subItem.id}>
                                                                     <ul className="nav nav-sm flex-column">
-                                                                        {/* child subItms  */}
+                                                                        {/* child subItems  */}
                                                                         {subItem.childItems && (
                                                                             (subItem.childItems || []).map((subChildItem : any, key : any) => (
                                                                                 <React.Fragment key={key}>
@@ -194,11 +196,12 @@ const HorizontalLayout = (props: any) => {
                                                                                                 className="nav-link"
                                                                                                 to="/#"
                                                                                                 data-bs-toggle="collapse"
+                                                                                                aria-expanded={subChildItem.stateVariables}
                                                                                             > {props.t(subChildItem.label)}
                                                                                             </Link>
-                                                                                            <Collapse className="menu-dropdown" isOpen={subChildItem.stateVariables} id="sidebarEcommerce">
+                                                                                            <Collapse className="menu-dropdown" isOpen={subChildItem.stateVariables} id={subChildItem.id}>
                                                                                                 <ul className="nav nav-sm flex-column">
-                                                                                                    {/* child subItms  */}
+                                                                                                    {/* child subItems  */}
                                                                                                     {subChildItem.childItems && (
                                                                                                         (subChildItem.childItems || []).map((subSubChildItem : any, key : number) => (
                                                                                                             <li className="nav-item apex" key={key}>

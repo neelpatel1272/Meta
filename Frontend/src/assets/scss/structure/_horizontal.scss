@@ -94,6 +94,7 @@
                     }
 
                     &:after {
+                        transform: rotate(90deg) !important;
                         color: var(--#{$prefix}topnav-item-active-color);
                     }
                 }
@@ -106,10 +107,12 @@
                 }
             }
 
-            >.nav-item {
-                >.nav-link[data-bs-toggle=collapse]:after {
-                    right: 0px;
-                    transform: rotate(90deg) !important;
+             @media (min-width: 1024.1px) {
+                >.nav-item {
+                    >.nav-link[data-bs-toggle=collapse]:after {
+                        right: 0px;
+                        transform: rotate(90deg) !important;
+                    }
                 }
             }
 

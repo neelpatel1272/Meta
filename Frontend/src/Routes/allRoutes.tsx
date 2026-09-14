@@ -22,8 +22,9 @@ import Register from "../pages/Authentication/Register";
 
 // User Profile
 import UserProfile from "../pages/Authentication/user-profile";
-import WhatsAppSetup from "pages/WatsApp/Setup/WhatsAppSetup";
 
+//watsapp setup
+import WhatsAppSetup from "../pages/WatsApp/Setup/WhatsAppSetup";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
