@@ -105,6 +105,7 @@ const Layout = (props : any) => {
     const onChangeLayoutMode = (value : any) => {
         if (changeLayoutMode) {
             dispatch(changeLayoutMode(value));
+            dispatch(changeSidebarTheme(value));
         }
     };
 

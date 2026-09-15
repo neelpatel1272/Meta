@@ -55,14 +55,14 @@ const UserProfile = () => {
       if (storedUser) {
         const obj = JSON.parse(storedUser);
 
-        if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
+        if (import.meta.env.VITE_DEFAULTAUTH === "firebase") {
 
           obj.displayName = user.username;
           setUserName(obj.displayName || "Admin");
           setemail(obj.email || "admin@gmail.com");
           setidx(obj.uid || '1');
-        } else if (process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-          process.env.REACT_APP_DEFAULTAUTH === "jwt"
+        } else if (import.meta.env.VITE_DEFAULTAUTH === "fake" ||
+          import.meta.env.VITE_DEFAULTAUTH === "jwt"
         ) {
           if (!isEmpty(user)) {
             obj.data.first_name = user.first_name;

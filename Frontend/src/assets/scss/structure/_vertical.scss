@@ -110,7 +110,7 @@
 
                     &:before {
                         opacity: 1;
-                        background-color: var(--#{$prefix}topnav-item-active-color);
+                        background-color: var(--#{$prefix}vertical-menu-item-active-color);
                     }
                 }
             }
@@ -160,7 +160,7 @@
                     color: var(--#{$prefix}vertical-menu-item-active-color);
 
                     &:before {
-                        background-color: var(--#{$prefix}topnav-item-active-color);
+                        background-color: var(--#{$prefix}vertical-menu-item-active-color);
                     }
                 }
             }
@@ -973,25 +973,25 @@
 
     [data-sidebar-image="img-1"] {
         .sidebar-background {
-            background-image: url('../../images/sidebar/img-1.jpg');
+            background-image: url('/images/sidebar/img-1.jpg');
         }
     }
 
     [data-sidebar-image="img-2"] {
         .sidebar-background {
-            background-image: url('../../images/sidebar/img-2.jpg');
+            background-image: url('/images/sidebar/img-2.jpg');
         }
     }
 
     [data-sidebar-image="img-3"] {
         .sidebar-background {
-            background-image: url('../../images/sidebar/img-3.jpg');
+            background-image: url('/images/sidebar/img-3.jpg');
         }
     }
 
     [data-sidebar-image="img-4"] {
         .sidebar-background {
-            background-image: url('../../images/sidebar/img-4.jpg');
+            background-image: url('/images/sidebar/img-4.jpg');
         }
     }
 

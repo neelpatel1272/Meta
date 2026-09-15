@@ -40,8 +40,8 @@ const Login = (props: any) => {
 
     useEffect(() => {
         if (user && user) {
-            const updatedUserData = process.env.REACT_APP_DEFAULTAUTH === "firebase" ? user.multiFactor.user.email : user.user.email;
-            const updatedUserPassword = process.env.REACT_APP_DEFAULTAUTH === "firebase" ? "" : user.user.confirm_password;
+            const updatedUserData = import.meta.env.VITE_DEFAULTAUTH === "firebase" ? user.multiFactor.user.email : user.user.email;
+            const updatedUserPassword = import.meta.env.VITE_DEFAULTAUTH === "firebase" ? "" : user.user.confirm_password;
             setUserLogin({
                 email: updatedUserData,
                 password: updatedUserPassword
@@ -55,7 +55,7 @@ const Login = (props: any) => {
 
         initialValues: {
             email: userLogin.email || "admin@themesbrand.com" || '',
-            password: userLogin.password || "123456" || '',
+            password: userLogin.password || "12345678" || '',
         },
         validationSchema: Yup.object({
             email: Yup.string().required("Please Enter Your Email"),

@@ -1,20 +1,17 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 
-//Dashboard
-
+// Dashboard
 import DashboardEcommerce from "../pages/DashboardEcommerce";
 
-
+// Error Pages
 import Basic404 from '../pages/AuthenticationInner/Errors/Basic404';
 import Cover404 from '../pages/AuthenticationInner/Errors/Cover404';
 import Alt404 from '../pages/AuthenticationInner/Errors/Alt404';
 import Error500 from '../pages/AuthenticationInner/Errors/Error500';
-
 import Offlinepage from "../pages/AuthenticationInner/Errors/Offlinepage";
 
-
-//login
+// Auth
 import Login from "../pages/Authentication/Login";
 import ForgetPasswordPage from "../pages/Authentication/ForgetPassword";
 import Logout from "../pages/Authentication/Logout";
@@ -23,41 +20,54 @@ import Register from "../pages/Authentication/Register";
 // User Profile
 import UserProfile from "../pages/Authentication/user-profile";
 
-//watsapp setup
+// WhatsApp SaaS Pages
 import WhatsAppSetup from "../pages/WatsApp/Setup/WhatsAppSetup";
+import WhatsAppInbox from "../pages/WatsApp/Inbox/WhatsAppInbox";
+import WhatsAppContacts from "../pages/WatsApp/Contacts/WhatsAppContacts";
+import WhatsAppTemplates from "../pages/WatsApp/Templates/WhatsAppTemplates";
+import WhatsAppCampaigns from "../pages/WatsApp/Campaigns/WhatsAppCampaigns";
+import WhatsAppSingleSend from "../pages/WatsApp/SingleSend/WhatsAppSingleSend";
+import ContactGroups from "../pages/WatsApp/Contacts/ContactGroups";
+import CustomFields from "../pages/WatsApp/Contacts/CustomFields";
+import ImportContact from "../pages/WatsApp/Contacts/ImportContact";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
   { path: "/index", component: <DashboardEcommerce /> },
-
-  //User Profile
   { path: "/profile", component: <UserProfile /> },
 
-  // this route should be at the end of all other routes
-  // eslint-disable-next-line react/display-name
+  // WhatsApp SaaS Modules
+  { path: "/whatsapp-setup", component: <WhatsAppSetup /> },
+  { path: "/inbox", component: <WhatsAppInbox /> },
+
+  { path: "/contacts", component: <WhatsAppContacts /> },
+  { path: "/contact-groups", component: <ContactGroups /> },
+  { path: "/import-contact", component: <ImportContact /> },
+  { path: "/custom-fields", component: <CustomFields /> },
+  
+  { path: "/templates", component: <WhatsAppTemplates /> },
+  { path: "/campaigns", component: <WhatsAppCampaigns /> },
+  { path: "/single-send", component: <WhatsAppSingleSend /> },
+
+  // Wildcard & Redirect routes (MUST BE AT THE END)
   {
     path: "/",
     exact: true,
     component: <Navigate to="/dashboard" />,
   },
   { path: "*", component: <Navigate to="/dashboard" /> },
-  {path: "/whatsapp-setup", component: <WhatsAppSetup />},
 ];
 
-const publicRoutes : any= [
-  // Authentication Page
+const publicRoutes: any = [
   { path: "/logout", component: <Logout /> },
   { path: "/login", component: <Login /> },
   { path: "/forgot-password", component: <ForgetPasswordPage /> },
   { path: "/register", component: <Register /> },
-
   { path: "/auth-404-basic", component: <Basic404 /> },
   { path: "/auth-404-cover", component: <Cover404 /> },
   { path: "/auth-404-alt", component: <Alt404 /> },
   { path: "/auth-500", component: <Error500 /> },
- 
   { path: "/auth-offline", component: <Offlinepage /> },
-
 ];
 
 export { authProtectedRoutes, publicRoutes };

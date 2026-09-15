@@ -83,7 +83,7 @@ const VerticalLayout = (props : any) => {
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         const initMenu = () => {
-            const pathName = process.env.PUBLIC_URL + path;
+            const pathName = import.meta.env.BASE_URL + path;
             const ul = document.getElementById("navbar-nav") as HTMLElement;
             const items : any = ul.getElementsByTagName("a");
             let itemsArray = [...items]; // converts NodeList to Array
@@ -122,9 +122,9 @@ const VerticalLayout = (props : any) => {
     }
 
     const removeActivation = (items :any) => {
-        let activeItems = items.filter((x : any) => x.classList.contains("active"));
+        let actiItems = items.filter((x : any) => x.classList.contains("active"));
 
-        activeItems.forEach((item : any) => {
+        actiItems.forEach((item : any) => {
             if (item.classList.contains("menu-link")) {
                 if (!item.classList.contains("active")) {
                     item.setAttribute("aria-expanded", false);
@@ -160,7 +160,6 @@ const VerticalLayout = (props : any) => {
                                             className="nav-link menu-link"
                                             to={item.link ? item.link : "/#"}
                                             data-bs-toggle="collapse"
-                                            aria-expanded={item.stateVariables}
                                         >
                                             <i className={item.icon}></i>
                                             <span data-key="t-apps">{props.t(item.label)}</span>
@@ -171,9 +170,9 @@ const VerticalLayout = (props : any) => {
                                         <Collapse
                                             className="menu-dropdown"
                                             isOpen={item.stateVariables}
-                                            id={item.id}>
-                                            <ul className="nav nav-sm flex-column">
-                                                {/* subItems  */}
+                                            id="sidebarApps">
+                                            <ul className="nav nav-sm flex-column test">
+                                                {/* subItms  */}
                                                 {item.subItems && ((item.subItems || []).map((subItem : any, key : number) => (
                                                     <React.Fragment key={key}>
                                                         {!subItem.isChildItem ? (
@@ -195,16 +194,15 @@ const VerticalLayout = (props : any) => {
                                                                     className="nav-link"
                                                                     to="/#"
                                                                     data-bs-toggle="collapse"
-                                                                    aria-expanded={subItem.stateVariables}
                                                                 >
                                                                     {props.t(subItem.label)}
                                                                     {subItem.badgeName ?
                                                                         <span className={"badge badge-pill bg-" + subItem.badgeColor} data-key="t-new">{subItem.badgeName}</span>
                                                                         : null}
                                                                 </Link>
-                                                                <Collapse className="menu-dropdown" isOpen={subItem.stateVariables} id={subItem.id}>
+                                                                <Collapse className="menu-dropdown" isOpen={subItem.stateVariables} id="sidebarEcommerce">
                                                                     <ul className="nav nav-sm flex-column">
-                                                                        {/* child subItems  */}
+                                                                        {/* child subItms  */}
                                                                         {subItem.childItems && (
                                                                             (subItem.childItems || []).map((childItem : any, key : number) => (
                                                                                 <React.Fragment key={key}>
@@ -217,10 +215,10 @@ const VerticalLayout = (props : any) => {
                                                                                             </Link>
                                                                                         </li>
                                                                                         : <li className="nav-item">
-                                                                                            <Link to="/#" className="nav-link" onClick={childItem.click} data-bs-toggle="collapse" aria-expanded={childItem.stateVariables}>
+                                                                                            <Link to="/#" className="nav-link" onClick={childItem.click} data-bs-toggle="collapse">
                                                                                                 {props.t(childItem.label)}
                                                                                             </Link>
-                                                                                            <Collapse className="menu-dropdown" isOpen={childItem.stateVariables} id={childItem.id}>
+                                                                                            <Collapse className="menu-dropdown" isOpen={childItem.stateVariables} id="sidebaremailTemplates">
                                                                                                 <ul className="nav nav-sm flex-column">
                                                                                                     {childItem.childItems.map((subChildItem : any, key : number) => (
                                                                                                         <li className="nav-item" key={key}>
