@@ -134,6 +134,13 @@ const Navdata = () => {
             icon: "ri-flashlight-line",
             link: "/single-send",
         },
+    {
+            id: "whatsapp-quickreply",
+            label: "Quick Reply",
+            icon: "ri-share-forward-line",
+            link: "/quick-replies",
+        },
+
         {
             id: "whatsapp-templates",
             label: "Templates",

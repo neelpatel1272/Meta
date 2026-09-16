@@ -5,7 +5,9 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CampaignController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ConversationController;
+use App\Http\Controllers\Api\CustomFieldController;
 use App\Http\Controllers\Api\MessageController;
+use App\Http\Controllers\Api\QuickReplyController;
 use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\WebhookController;
 use App\Http\Controllers\Api\WhatsAppAccountController;
@@ -74,9 +76,12 @@ Route::prefix('messages')->group(function () {
 Route::prefix('templates')->group(function () {
     Route::get('/', [TemplateController::class, 'index']);
     Route::post('/', [TemplateController::class, 'store']);
-    Route::get('/{id}', [TemplateController::class, 'show']);
-    Route::delete('/{id}', [TemplateController::class, 'destroy']);
+    // IMPORTANT: keep this above the '/{id}' routes so "upload-media" isn't swallowed as an :id param.
+    Route::post('/upload-media', [TemplateController::class, 'uploadMedia']);
     Route::post('/sync/{accountId}', [TemplateController::class, 'sync']);
+    Route::get('/{id}', [TemplateController::class, 'show']);
+    Route::put('/{id}', [TemplateController::class, 'update']);
+    Route::delete('/{id}', [TemplateController::class, 'destroy']);
 });
 
 // Broadcast Campaigns
@@ -86,6 +91,23 @@ Route::prefix('campaigns')->group(function () {
     Route::get('/{id}', [CampaignController::class, 'show']);
     Route::post('/{id}/send', [CampaignController::class, 'send']);
 });
+
+// Quick Replies (canned responses used in the inbox)
+Route::prefix('quick-replies')->group(function () {
+    Route::get('/', [QuickReplyController::class, 'index']);
+    Route::post('/', [QuickReplyController::class, 'store']);
+    // Keep above '/{id}' so "upload-media" isn't swallowed as an :id param.
+    Route::post('/upload-media', [QuickReplyController::class, 'uploadMedia']);
+    Route::get('/{id}', [QuickReplyController::class, 'show']);
+    Route::put('/{id}', [QuickReplyController::class, 'update']);
+    Route::delete('/{id}', [QuickReplyController::class, 'destroy']);
+});
+
+
+Route::get('/custom-fields', [CustomFieldController::class, 'index']);
+Route::post('/custom-fields', [CustomFieldController::class, 'store']);
+Route::delete('/custom-fields/{id}', [CustomFieldController::class, 'destroy']);
+
 
 // Dashboard Analytics
 Route::get('/analytics/overview', [AnalyticsController::class, 'overview']);

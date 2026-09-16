@@ -42,6 +42,7 @@ export interface Contact {
   group_name?: string;
   tags?: string[];
   status: string;
+  custom_fields?: Record<string, string>;
 }
 
 export interface Message {
@@ -67,17 +68,37 @@ export interface Conversation {
   messages?: Message[];
 }
 
+export type TemplateHeaderType = "NONE" | "TEXT" | "IMAGE" | "VIDEO" | "PDF" | "CAROUSEL";
+
+export type TemplateButtonType = "QUICK_REPLY" | "URL" | "PHONE_NUMBER" | "COPY_CODE" | "FLOW";
+
+export interface TemplateButton {
+  type: TemplateButtonType;
+  text: string;
+  url?: string;
+  phone_number?: string;
+  example?: string;
+}
+
+export interface CarouselCard {
+  header_content?: string;
+  body_text: string;
+  buttons?: TemplateButton[];
+}
+
 export interface Template {
   id: number;
   name: string;
   category: "MARKETING" | "UTILITY" | "AUTHENTICATION";
   language: string;
   status: "APPROVED" | "PENDING" | "REJECTED";
-  header_type?: string;
+  header_type?: TemplateHeaderType;
   header_content?: string;
   body_text: string;
   footer_text?: string;
-  buttons?: any[];
+  buttons?: TemplateButton[];
+  carousel_cards?: CarouselCard[];
+  sample_variables?: string[];
 }
 
 export interface Campaign {
@@ -105,21 +126,20 @@ export const whatsappApi = {
   syncPhoneNumbers: (accountId: number) => api.post(`/whatsapp/accounts/${accountId}/phone-numbers/sync`),
 
   // Contacts
-// Contacts
-getContacts: (params?: any) => api.get("/contacts", { params }),
-createContact: (data: any) => api.post("/contacts", data),
-importContacts: (contacts: any[]) => api.post("/contacts/import", { contacts }),
-importContactsCsv: (file: File) => {
+  getContacts: (params?: any) => api.get("/contacts", { params }),
+  createContact: (data: any) => api.post("/contacts", data),
+  importContacts: (contacts: any[]) => api.post("/contacts/import", { contacts }),
+  importContactsCsv: (file: File) => {
     const formData = new FormData();
     formData.append("file", file);
 
     return api.post("/contacts/import-csv", formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
-},
-deleteContact: (id: number) => api.delete(`/contacts/${id}`),
+  },
+  deleteContact: (id: number) => api.delete(`/contacts/${id}`),
 
   // Conversations & Inbox
   getConversations: (params?: any) => api.get("/conversations", { params }),
@@ -131,13 +151,35 @@ deleteContact: (id: number) => api.delete(`/contacts/${id}`),
 
   // Templates
   getTemplates: (params?: any) => api.get("/templates", { params }),
+  getTemplate: (id: number) => api.get(`/templates/${id}`),
   createTemplate: (data: any) => api.post("/templates", data),
+  updateTemplate: (id: number, data: any) => api.put(`/templates/${id}`, data),
+  deleteTemplate: (id: number) => api.delete(`/templates/${id}`),
   syncTemplates: (accountId: number) => api.post(`/templates/sync/${accountId}`),
+  uploadTemplateMedia: (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    return api.post<{ success: boolean; data?: { url: string }; url?: string }>(
+      "/templates/upload-media",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+  },
 
   // Campaigns
   getCampaigns: () => api.get("/campaigns"),
   createCampaign: (data: any) => api.post("/campaigns", data),
   sendCampaign: (id: number) => api.post(`/campaigns/${id}/send`),
+
+  //cutomfields For the Conatcts
+  getCustomFields: () => api.get("/custom-fields"),
+createCustomField: (data: { name: string; type: string }) => api.post("/custom-fields", data),
+deleteCustomField: (id: number) => api.delete(`/custom-fields/${id}`),
 
   // Analytics
   getAnalyticsOverview: () => api.get("/analytics/overview"),

@@ -73,7 +73,7 @@ const ContactGroups: React.FC = () => {
                                             </td>
 
                                             <td>
-                                                <span className="badge bg-light text-dark">
+                                                <span className="badge bg-secondary-subtle text-body border border-secondary-subtle">
                                                     {group.count} Contacts
                                                 </span>
                                             </td>

@@ -31,6 +31,10 @@ import ContactGroups from "../pages/WatsApp/Contacts/ContactGroups";
 import CustomFields from "../pages/WatsApp/Contacts/CustomFields";
 import ImportContact from "../pages/WatsApp/Contacts/ImportContact";
 
+import WhatsAppTemplateBuilder from "../pages/WatsApp/Templates/WhatsAppTemplateBuilder";
+import QuickReplyForm from "../pages/WatsApp/QuickReply/Quickreplyform";
+import QuickReplies from "../pages/WatsApp/QuickReply/QuickReplies";
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
   { path: "/index", component: <DashboardEcommerce /> },
@@ -48,6 +52,12 @@ const authProtectedRoutes = [
   { path: "/templates", component: <WhatsAppTemplates /> },
   { path: "/campaigns", component: <WhatsAppCampaigns /> },
   { path: "/single-send", component: <WhatsAppSingleSend /> },
+
+  { path: "/quick-replies/create", component: <QuickReplyForm /> },
+  { path: "/quick-replies", component: <QuickReplies /> },
+  { path: "/quick-replies/edit/:id", component: <QuickReplyForm /> },
+
+  { path: "/whatsapp/templates/new", component: <WhatsAppTemplateBuilder /> },
 
   // Wildcard & Redirect routes (MUST BE AT THE END)
   {
