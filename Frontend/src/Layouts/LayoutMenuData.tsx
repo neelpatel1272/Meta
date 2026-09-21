@@ -51,7 +51,7 @@ const Navdata = () => {
             id: "dashboard",
             label: "Dashboards",
             icon: "ri-dashboard-2-line",
-            link: "#",
+            link: "/dashboard",
             stateVariables: isDashboard,
             click: function (e: any) {
                 e.preventDefault();
@@ -59,58 +59,6 @@ const Navdata = () => {
                 setIscurrentState("Dashboard");
                 updateIconSidebar(e);
             },
-            subItems: [
-                {
-                    id: "analytics",
-                    label: "Analytics",
-                    link: "#",
-                    parentId: "dashboard",
-                },
-                {
-                    id: "crm",
-                    label: "CRM",
-                    link: "#",
-                    parentId: "dashboard",
-                },
-                {
-                    id: "ecommerce",
-                    label: "Ecommerce",
-                    link: "/dashboard",
-                    parentId: "dashboard",
-                },
-                {
-                    id: "crypto",
-                    label: "Crypto",
-                    link: "#",
-                    parentId: "dashboard",
-                },
-                {
-                    id: "projects",
-                    label: "Projects",
-                    link: "#",
-                    parentId: "dashboard",
-                },
-                {
-                    id: "nft",
-                    label: "NFT",
-                    link: "#",
-                    parentId: "dashboard",
-                },
-                {
-                    id: "job",
-                    label: "Job",
-                    link: "#",
-                    parentId: "dashboard",
-                },
-                {
-                    id: "blog",
-                    label: "Blog",
-                    link: "#",
-                    parentId: "dashboard",
-                    badgeColor: "success",
-                    badgeName: "New",
-                },
-            ],
         },
         {
             label: "WhatsApp Business API",

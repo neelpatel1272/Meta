@@ -158,4 +158,6 @@ Meta integration API — later
 
 https://youtu.be/05fGqZ5hW4c?si=CLIelbTUwHgInuyA
 
+Quick reply button is for user Initiated
+
 i want to build all api Development later i will replce my meta integration ok 
