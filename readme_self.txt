@@ -151,6 +151,7 @@ Conversation API
 Message API
 Template API
 Campaign API
+hello
 Campaign Recipient API
 Webhook API
 Dashboard/Analytics API
