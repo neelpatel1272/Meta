@@ -16,68 +16,81 @@ import Login from "../pages/Authentication/Login";
 import ForgetPasswordPage from "../pages/Authentication/ForgetPassword";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
-
-// User Profile
 import UserProfile from "../pages/Authentication/user-profile";
 
-// WhatsApp SaaS Pages
-import WhatsAppSetup from "../pages/WatsApp/Setup/WhatsAppSetup";
-import WhatsAppInbox from "../pages/WatsApp/Inbox/WhatsAppInbox";
-import WhatsAppContacts from "../pages/WatsApp/Contacts/WhatsAppContacts";
-import WhatsAppTemplates from "../pages/WatsApp/Templates/WhatsAppTemplates";
-import WhatsAppCampaigns from "../pages/WatsApp/Campaigns/WhatsAppCampaigns";
+// ── WhatsApp Pages ────────────────────────────────────────────────────────────
+import WhatsAppSetup   from "../pages/WatsApp/Setup/WhatsAppSetup";
+import WhatsAppInfo    from "../pages/WatsApp/Setup/WhatsAppInfo";
+import WhatsAppInbox   from "../pages/WatsApp/Inbox/WhatsAppInbox";
+import History         from "../pages/WatsApp/History/History";
 import WhatsAppSingleSend from "../pages/WatsApp/SingleSend/WhatsAppSingleSend";
-import ContactGroups from "../pages/WatsApp/Contacts/ContactGroups";
-import CustomFields from "../pages/WatsApp/Contacts/CustomFields";
-import ImportContact from "../pages/WatsApp/Contacts/ImportContact";
-
+import WhatsAppTemplates  from "../pages/WatsApp/Templates/WhatsAppTemplates";
 import WhatsAppTemplateBuilder from "../pages/WatsApp/Templates/WhatsAppTemplateBuilder";
-import QuickReplyForm from "../pages/WatsApp/QuickReply/Quickreplyform";
-import QuickReplies from "../pages/WatsApp/QuickReply/QuickReplies";
+import WhatsAppCampaigns  from "../pages/WatsApp/Campaigns/WhatsAppCampaigns";
+import Billing            from "../pages/WatsApp/Billing/Billing";
+
+// ── Contacts ──────────────────────────────────────────────────────────────────
+import WhatsAppContacts from "../pages/WatsApp/Contacts/WhatsAppContacts";
+import ContactGroups    from "../pages/WatsApp/Contacts/ContactGroups";
+import ImportContact    from "../pages/WatsApp/Contacts/ImportContact";
+import CustomFields     from "../pages/WatsApp/Contacts/CustomFields";
+
+// ── Quick Replies ─────────────────────────────────────────────────────────────
+import QuickReplies    from "../pages/WatsApp/QuickReply/QuickReplies";
+import QuickReplyForm  from "../pages/WatsApp/QuickReply/Quickreplyform";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
-  { path: "/index", component: <DashboardEcommerce /> },
-  { path: "/profile", component: <UserProfile /> },
+  { path: "/index",     component: <DashboardEcommerce /> },
+  { path: "/profile",   component: <UserProfile /> },
 
-  // WhatsApp SaaS Modules
+  // WhatsApp
   { path: "/whatsapp-setup", component: <WhatsAppSetup /> },
-  { path: "/inbox", component: <WhatsAppInbox /> },
+  { path: "/whatsapp-info",  component: <WhatsAppInfo /> },
 
-  { path: "/contacts", component: <WhatsAppContacts /> },
-  { path: "/contact-groups", component: <ContactGroups /> },
-  { path: "/import-contact", component: <ImportContact /> },
-  { path: "/custom-fields", component: <CustomFields /> },
-  
-  { path: "/templates", component: <WhatsAppTemplates /> },
-  { path: "/campaigns", component: <WhatsAppCampaigns /> },
+  // Billing
+  { path: "/billing", component: <Billing /> },
+
+  // Inbox & History
+  { path: "/inbox",   component: <WhatsAppInbox /> },
+  { path: "/history", component: <History /> },
+
+  // Messaging
   { path: "/single-send", component: <WhatsAppSingleSend /> },
 
-  { path: "/quick-replies/create", component: <QuickReplyForm /> },
-  { path: "/quick-replies", component: <QuickReplies /> },
-  { path: "/quick-replies/edit/:id", component: <QuickReplyForm /> },
-
+  // Templates
+  { path: "/templates",           component: <WhatsAppTemplates /> },
   { path: "/whatsapp/templates/new", component: <WhatsAppTemplateBuilder /> },
 
-  // Wildcard & Redirect routes (MUST BE AT THE END)
-  {
-    path: "/",
-    exact: true,
-    component: <Navigate to="/dashboard" />,
-  },
+  // Contacts
+  { path: "/contacts",       component: <WhatsAppContacts /> },
+  { path: "/contact-groups", component: <ContactGroups /> },
+  { path: "/import-contact", component: <ImportContact /> },
+  { path: "/custom-fields",  component: <CustomFields /> },
+
+  // Campaigns
+  { path: "/campaigns", component: <WhatsAppCampaigns /> },
+
+  // Quick / Suggested Replies
+  { path: "/quick-replies",          component: <QuickReplies /> },
+  { path: "/quick-replies/create",   component: <QuickReplyForm /> },
+  { path: "/quick-replies/edit/:id", component: <QuickReplyForm /> },
+
+  // Wildcard & Redirect (MUST be last)
+  { path: "/", exact: true, component: <Navigate to="/dashboard" /> },
   { path: "*", component: <Navigate to="/dashboard" /> },
 ];
 
 const publicRoutes: any = [
-  { path: "/logout", component: <Logout /> },
-  { path: "/login", component: <Login /> },
+  { path: "/logout",          component: <Logout /> },
+  { path: "/login",           component: <Login /> },
   { path: "/forgot-password", component: <ForgetPasswordPage /> },
-  { path: "/register", component: <Register /> },
-  { path: "/auth-404-basic", component: <Basic404 /> },
-  { path: "/auth-404-cover", component: <Cover404 /> },
-  { path: "/auth-404-alt", component: <Alt404 /> },
-  { path: "/auth-500", component: <Error500 /> },
-  { path: "/auth-offline", component: <Offlinepage /> },
+  { path: "/register",        component: <Register /> },
+  { path: "/auth-404-basic",  component: <Basic404 /> },
+  { path: "/auth-404-cover",  component: <Cover404 /> },
+  { path: "/auth-404-alt",    component: <Alt404 /> },
+  { path: "/auth-500",        component: <Error500 /> },
+  { path: "/auth-offline",    component: <Offlinepage /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };

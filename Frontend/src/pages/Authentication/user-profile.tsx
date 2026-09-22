@@ -1,130 +1,92 @@
 import React, { useState, useEffect } from "react";
-import { isEmpty } from "lodash";
-
 import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Alert,
-  CardBody,
-  Button,
-  Label,
-  Input,
-  FormFeedback,
-  Form,
+  Container, Row, Col, Card, Alert, CardBody,
+  Button, Label, Input, FormFeedback, Form,
 } from "reactstrap";
 
-// Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
-//redux
-import { useSelector, useDispatch } from "react-redux";
-
 import avatar from "../../assets/images/users/avatar-1.jpg";
-// actions
-import { editProfile, resetProfileFlag } from "../../slices/thunks";
-import { createSelector } from "reselect";
 
 const UserProfile = () => {
-  const dispatch : any = useDispatch();
+  const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("1");
+  const [userName, setUserName] = useState("");
+  const [success, setSuccess] = useState(false);
 
-  const [email, setemail] = useState("admin@gmail.com");
-  const [idx, setidx] = useState("1");
-
-  const [userName, setUserName] = useState("Admin");
-
-  const userprofileData = createSelector(
-    (state : any) => state.Profile,
-    (state) => ({
-      user: state.user,
-      success: state.success,
-      error: state.error
-    })
-  );
-  // Inside your component
-  const {
-    user, success, error 
-  } = useSelector(userprofileData);
-
-
+  // Load from sessionStorage on mount (Laravel format: obj.user.name / obj.user.email)
   useEffect(() => {
-    if (sessionStorage.getItem("authUser")) {
-      const storedUser = sessionStorage.getItem("authUser");
-      if (storedUser) {
-        const obj = JSON.parse(storedUser);
-
-        if (import.meta.env.VITE_DEFAULTAUTH === "firebase") {
-
-          obj.displayName = user.username;
-          setUserName(obj.displayName || "Admin");
-          setemail(obj.email || "admin@gmail.com");
-          setidx(obj.uid || '1');
-        } else if (import.meta.env.VITE_DEFAULTAUTH === "fake" ||
-          import.meta.env.VITE_DEFAULTAUTH === "jwt"
-        ) {
-          if (!isEmpty(user)) {
-            obj.data.first_name = user.first_name;
-            sessionStorage.removeItem("authUser");
-            sessionStorage.setItem("authUser", JSON.stringify(obj));
-          }
-
-          setUserName(obj.data.first_name || "Admin");
-          setemail(obj.data.email || "admin@gmail.com");
-          setidx(obj.data._id || "1");
-
+    const stored = sessionStorage.getItem("authUser");
+    if (stored) {
+      try {
+        const obj = JSON.parse(stored);
+        if (obj?.user) {
+          setUserName(obj.user.name || "");
+          setEmail(obj.user.email || "");
+          setUserId(String(obj.user.id || "1"));
         }
-        setTimeout(() => {
-          dispatch(resetProfileFlag());
-        }, 3000);
-      }
+      } catch (_) {}
     }
-  }, [dispatch, user]);
-
-
+  }, []);
 
   const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
-
     initialValues: {
-      first_name: userName || 'Admin',
-      idx: idx || '',
+      name: userName || "",
     },
     validationSchema: Yup.object({
-      first_name: Yup.string().required("Please Enter Your UserName"),
+      name: Yup.string().required("Please enter your name"),
     }),
     onSubmit: (values) => {
-      dispatch(editProfile(values));
-    }
+      // Update sessionStorage locally
+      const stored = sessionStorage.getItem("authUser");
+      if (stored) {
+        try {
+          const obj = JSON.parse(stored);
+          if (obj?.user) {
+            obj.user.name = values.name;
+            sessionStorage.setItem("authUser", JSON.stringify(obj));
+            setUserName(values.name);
+            setSuccess(true);
+            setTimeout(() => setSuccess(false), 3000);
+          }
+        } catch (_) {}
+      }
+    },
   });
 
-  document.title = "Profile | Velzon - React Admin & Dashboard Template";
+  document.title = "Profile | WhatsApp SaaS";
+
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
           <Row>
             <Col lg="12">
-              {error && error ? <Alert color="danger">{error}</Alert> : null}
-              {success ? <Alert color="success">Username Updated To {userName}</Alert> : null}
+              {success && (
+                <Alert color="success">Name updated to <strong>{userName}</strong> successfully!</Alert>
+              )}
 
               <Card>
                 <CardBody>
-                  <div className="d-flex">
+                  <div className="d-flex align-items-center">
                     <div className="mx-3">
                       <img
                         src={avatar}
-                        alt=""
+                        alt="Avatar"
                         className="avatar-md rounded-circle img-thumbnail"
                       />
                     </div>
                     <div className="flex-grow-1 align-self-center">
                       <div className="text-muted">
-                        <h5>{userName || "Admin"}</h5>
-                        <p className="mb-1">Email Id : {email}</p>
-                        <p className="mb-0">Id No : #{idx}</p>
+                        <h5 className="mb-1">{userName || "—"}</h5>
+                        <p className="mb-1">
+                          <i className="ri-mail-line me-1"></i>{email || "—"}
+                        </p>
+                        <p className="mb-0 fs-12">
+                          <i className="ri-user-line me-1"></i>User ID: #{userId}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -133,7 +95,7 @@ const UserProfile = () => {
             </Col>
           </Row>
 
-          <h4 className="card-title mb-4">Change User Name</h4>
+          <h4 className="card-title mb-4">Update Name</h4>
 
           <Card>
             <CardBody>
@@ -142,32 +104,27 @@ const UserProfile = () => {
                 onSubmit={(e) => {
                   e.preventDefault();
                   validation.handleSubmit();
-                  return false;
                 }}
               >
                 <div className="form-group">
-                  <Label className="form-label">User Name</Label>
+                  <Label className="form-label">Display Name</Label>
                   <Input
-                    name="first_name"
-                    // value={name}
+                    name="name"
                     className="form-control"
-                    placeholder="Enter User Name"
+                    placeholder="Enter your name"
                     type="text"
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
-                    value={validation.values.first_name || ""}
-                    invalid={
-                      validation.touched.first_name && validation.errors.first_name ? true : false
-                    }
+                    value={validation.values.name || ""}
+                    invalid={validation.touched.name && !!validation.errors.name}
                   />
-                  {validation.touched.first_name && validation.errors.first_name ? (
-                    <FormFeedback type="invalid">{validation.errors.first_name}</FormFeedback>
-                  ) : null}
-                  <Input name="idx" value={idx} type="hidden" />
+                  {validation.touched.name && validation.errors.name && (
+                    <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
+                  )}
                 </div>
                 <div className="text-center mt-4">
-                  <Button type="submit" color="danger">
-                    Update User Name
+                  <Button type="submit" color="primary">
+                    Update Name
                   </Button>
                 </div>
               </Form>

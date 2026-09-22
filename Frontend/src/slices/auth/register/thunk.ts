@@ -1,43 +1,36 @@
-//Include Both Helper File with needed methods
-import { getFirebaseBackend } from "../../../helpers/firebase_helper";
-import {
-  postFakeRegister,
-  postJwtRegister,
-} from "../../../helpers/fakebackend_helper";
-
-// action
+import { postFakeRegister } from "../../../helpers/fakebackend_helper";
 import {
   registerUserSuccessful,
   registerUserFailed,
   resetRegisterFlagChange,
 } from "./reducer";
 
-// initialize relavant method of both Auth
-const fireBaseBackend : any = getFirebaseBackend();
-
-// Is user register successfull then direct plot user in redux.
-export const registerUser = (user : any) => async (dispatch : any) => {
+// Is user register successful then direct plot user in redux.
+export const registerUser = (user: any) => async (dispatch: any) => {
   try {
-    let response;
+    // Map first_name (form field) → name (backend field name)
+    const payload = {
+      name: user.first_name || user.name || "",
+      email: user.email,
+      password: user.password,
+    };
 
-    if (import.meta.env.VITE_DEFAULTAUTH === "firebase") {
-      response = fireBaseBackend.registerUser(user.email, user.password);
-      // yield put(registerUserSuccessful(response));
-    } else if (import.meta.env.VITE_DEFAULTAUTH === "jwt") {
-      response = postJwtRegister('/post-jwt-register', user);
-      // yield put(registerUserSuccessful(response));
-    } else if (import.meta.env.VITE_API_URL) {
-      response = postFakeRegister(user);
-      const data : any = await response;
+    const data: any = await postFakeRegister(payload);
 
-      if (data.message === "success") {
-        dispatch(registerUserSuccessful(data));
-      } else {
-        dispatch(registerUserFailed(data));
-      }
+    if (data && data.status === "success") {
+      dispatch(registerUserSuccessful(data));
+    } else {
+      dispatch(registerUserFailed(data?.message || "Registration failed"));
     }
-  } catch (error) {
-    dispatch(registerUserFailed(error));
+  } catch (error: any) {
+    // Extract the most useful error message from Laravel validation errors
+    const message =
+      error?.response?.data?.errors?.email?.[0] ||
+      error?.response?.data?.errors?.name?.[0] ||
+      error?.response?.data?.errors?.password?.[0] ||
+      error?.response?.data?.message ||
+      "Registration failed. Please try again.";
+    dispatch(registerUserFailed(message));
   }
 };
 
@@ -49,13 +42,3 @@ export const resetRegisterFlag = () => {
     return error;
   }
 };
-
-
-// export const apiError = () => {
-//   try {
-//     const response = apiErrorChange("");
-//     return response;
-//   } catch (error) {
-//     return error;
-//   }
-// };
